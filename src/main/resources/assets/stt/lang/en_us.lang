@@ -1,0 +1,5 @@
+#PARSE_ESCAPES
+
+#KeyBindings
+key.glasspane.categories.voice=Speech To Text
+key.glasspane.category.voice.activate=Activate Speech To Text
