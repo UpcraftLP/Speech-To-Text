@@ -1,0 +1,30 @@
+language: java
+before_install:
+    - chmod +x gradlew
+install:
+    - "./gradlew setupCiWorkspace"
+script:
+    - "./gradlew clean build"
+jdk:
+    - oraclejdk8
+before_cache:
+    - find $HOME/.gradle/ -name '*.lock' -print -exec rm -f {} \;
+cache:
+    directories:
+        - "$HOME/.gradle/caches/"
+        - "$HOME/.gradle/wrapper/"
+sudo: false
+before_deploy:
+    - echo "deploying to GitHub release $TRAVIS_TAG:"
+    - echo $(ls  | tr '\n' ', ')
+deploy:
+    provider: releases
+    api_key:
+        secure: vA9KdDkWSQFtzMUd7FEN/FeGGCsJwbbUpDXU4MHnsrKuCiQEf+lXtFRjKrb4sSQuhnjZMuyki26m7jq4hpW81ALUSOC6I1XnaoI5tS0KVH797C+EltcMs6mtyUdgtof02UJeUYuueZJTXe0VmgNuCbA0bfHXgLYjC62TZbdfBCso1DciPSf9ILPuOAHvCabrM3qBYl7XBC7BP/UFMSiC08mL2iv034lyHZRbqWAoqqpuy1g3wo11iDZU5S8jJi9NXTwKMW3SEtSltItf0BQqUhL5gzJT+cYguX3vzejBok4i0qB8s3GOduyJ5B0Koi55mqYk8M/Noo2kox2nfM5q6nAd/iAzKOq8SArmjc/VKXyC7DXxwEee2CenBgEo6aEWdZq97gAb27sKp67DWD4yHMeQjQudlVO40sKjg/vuwqzR/F81iFgQzSv8Z8KXxeIIOyiPKbHHPLQ20CMcfhE3zvF0N/+2uJ3BNG6R32hFfxrRMxEUC/ZAZsGmK1WNl3jxhPsjk9ZZgKKkWCbUYDtLeybPGjDTYL6KZP+1WeakTL509fsrcHEfnmvp6pVWn9iBWAUdx2ZOm+2OUO86KEDHrn1HE4LGQ6c6QF3+M+UtfxEkHor81CHw0wqLQoeNeH2V06jRg6bbTNtTm8h494S+b0sSxntrK2nBymBfR0QDaYM=
+    file_glob: true
+    file: ./build/libs/*
+    skip_cleanup: true
+    target_commitsh: $TRAVIS_TAG
+    on:
+        repo: UpcraftLP/Speech-To-Text
+        tags: true
